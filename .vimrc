@@ -41,13 +41,13 @@ set guioptions-=A
 set guioptions+=e
 
 " use dark theme
-set guioptions+=d
+" set guioptions+=d
 
 " enable left vertical scroll bar
-set guioptions+=l
+" set guioptions+=l
 
 " enable right hand scroll bar
-set guioptions+=r
+" set guioptions+=r
 
 " enable mouse
 set mouse=a
@@ -141,27 +141,66 @@ let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
 let g:ctrlp_open_multiple_files = 'ir'
 let g:ctrlp_open_new_file = 'ir'
 
+let g:ctrlp_prompt_mappings = {
+    \ 'PrtBS()':              ['<bs>', '<c-]>'],
+    \ 'PrtDelete()':          ['<del>'],
+    \ 'PrtDeleteWord()':      ['<c-w>'],
+    \ 'PrtClear()':           ['<c-u>'],
+    \ 'PrtSelectMove("j")':   ['<c-j>', '<down>'],
+    \ 'PrtSelectMove("k")':   ['<c-k>', '<up>'],
+    \ 'PrtSelectMove("t")':   ['<Home>', '<kHome>'],
+    \ 'PrtSelectMove("b")':   ['<End>', '<kEnd>'],
+    \ 'PrtSelectMove("u")':   ['<PageUp>', '<kPageUp>'],
+    \ 'PrtSelectMove("d")':   ['<PageDown>', '<kPageDown>'],
+    \ 'PrtHistory(-1)':       ['<c-n>'],
+    \ 'PrtHistory(1)':        ['<c-p>'],
+    \ 'AcceptSelection("e")': ['<cr>', '<2-LeftMouse>'],
+    \ 'AcceptSelection("h")': ['<c-x>', '<c-cr>', '<c-s>'],
+    \ 'AcceptSelection("t")': ['<c-t>'],
+    \ 'AcceptSelection("v")': ['<c-v>', '<RightMouse>'],
+    \ 'ToggleFocus()':        ['<s-tab>'],
+    \ 'ToggleRegex()':        ['<c-r>'],
+    \ 'ToggleByFname()':      ['<c-d>'],
+    \ 'ToggleType(1)':        ['<c-f>', '<c-up>'],
+    \ 'ToggleType(-1)':       ['<c-b>', '<c-down>'],
+    \ 'PrtExpandDir()':       ['<tab>'],
+    \ 'PrtInsert("c")':       ['<MiddleMouse>', '<insert>'],
+    \ 'PrtInsert()':          ['<c-\>'],
+    \ 'PrtCurStart()':        ['<c-a>'],
+    \ 'PrtCurEnd()':          ['<c-e>'],
+    \ 'PrtCurLeft()':         ['<c-h>', '<left>', '<c-^>'],
+    \ 'PrtCurRight()':        ['<c-l>', '<right>'],
+    \ 'PrtClearCache()':      ['<F5>'],
+    \ 'PrtDeleteEnt()':       ['<c-g>'],
+    \ 'CreateNewFile()':      ['<c-y>'],
+    \ 'MarkToOpen()':         ['<c-z>'],
+    \ 'OpenMulti()':          ['<c-o>'],
+    \ 'PrtExit()':            ['<esc>', '<c-c>', '<c-g>'],
+    \ }
+
 " attempt to enable fullscreen gvim mode
-map <silent> <F11>
-\    :call system("wmctrl -ir " . v:windowid . " -b toggle,fullscreen")<CR>
+"map <silent> <F11>
+"\    :call system("wmctrl -ir " . v:windowid . " -b toggle,fullscreen")<CR>
 
 " attempt to set wildignore
 set wildignore+=*/.git/*
 
+" Attempt to setup ripgrep as the default grep tool
+if executable("rg")
+  set grepprg=rg\ --vimgrep\ --smart-case\ --hidden
+  set grepformat=%f:%l:%c:%m
+endif
+
+map <C-n>    :cnext<CR>
+map <C-m>    :cprevious<CR>
+
+map <C-l>    :set number!<CR>
+map <S-l>    :set relativenumber!<CR>
 
 " switch back to previous buffer easily
 map <Tab>    :BufMRUNext<CR>
 map <S-Tab>  :BufMRUPrev<CR>
-map <C-Tab>  :BufMRUCommit<CR>
-
-" Map the remapped caps lock key (now home key) to pasting
-" use the ctrl-r move in insert and command
-" use the + register to use the system clipboard
-map <Home> "+P
-"imap <Home> <C-R>+
-"vmap <Home> "+p
-"cmap <Home> <C-R>+
-
+map <home>   :BufMRUCommit<CR>
 
 " use nifty help command to show help in vertical split
 command -nargs=* -complete=help Help vertical belowright help <args>
@@ -179,7 +218,7 @@ set titlestring=%{getcwd()}
 
 " AirLine stuff lightline
 let g:airline#extensions#tabline#enabled = 1
-let g:airline_theme='molokai'
+let g:airline_theme='jellybeans'
 let g:airline_inactive_collapse=1
 let g:airline#extensions#fern#enabled = 1
 let g:airline#extensions#fzf#enabled = 1
@@ -187,7 +226,7 @@ let g:airline#extensions#nerdtree_statusline = 1
 let g:airline#extensions#quickfix#quickfix_text = 'Quickfix'
 let g:airline#extensions#quickfix#location_text = 'Location'
 let g:airline#extensions#tabline#show_tabs = 1
-let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
+let g:airline#extensions#tabline#formatter = 'jsformatter'
 let g:airline#extensions#tabline#fnamecollapse = 0 
 let g:airline#extensions#tabline#fnamemod = ':p:.'
 
@@ -234,10 +273,11 @@ Plug 'kien/ctrlp.vim'
 Plug 'flazz/vim-colorschemes'
 Plug 'wincent/command-t'
 
-
-
 call plug#end()
 
 " Set a colour scheme
-color slate2
+color OceanicNext
+
+set cursorline
+set cursorlineopt=number
 
